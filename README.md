@@ -1,5 +1,7 @@
 # Nexus — Causal Intelligence Platform
 
+🚀 **Live Deployment:** [View the Final Project Dashboard Here](https://nexus-frontend-teal.vercel.app/?repo=https%3A%2F%2Fgithub.com%2FAnshumaan1254%2FARKA.git&window=1year)
+
 > **Nexus is the first software comprehension platform built on a formal computational model of organizational causality.**
 
 While other AI coding tools compete on velocity (how fast to write the next line of code), Nexus competes on **comprehension** — making the invisible causal chains inside a codebase visible, queryable, and actionable.
