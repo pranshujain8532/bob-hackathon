@@ -51,8 +51,6 @@ except ImportError:
 # ── Config ─────────────────────────────────────────────────
 NEO4J_URI = "bolt://localhost:7687"
 GEMINI_MODEL = "gemini-2.5-flash"
-WEAVIATE_URL = "https://xgysxhhosmiqqawovgtguq.c0.asia-southeast1.gcp.weaviate.cloud"
-WEAVIATE_KEY = "YVN1enphUHBqSUNIMkRlal96Um8yUEpLSzEyaWViaEFEK0tTdlUwZzA4SGNBU1pUYlc1ZDVZbEU3K3RJPV92MjAw"
 WEAVIATE_COLLECTION = "NexusDPR"
 
 SYSTEM_PROMPT = (
@@ -109,8 +107,11 @@ def connect_weaviate():
     if not HAS_WEAVIATE:
         return None
     try:
-        url = os.getenv("WEAVIATE_URL", WEAVIATE_URL)
-        key = os.getenv("WEAVIATE_KEY", WEAVIATE_KEY)
+        url = os.getenv("WEAVIATE_URL")
+        key = os.getenv("WEAVIATE_KEY")
+        if not url or not key:
+            print(f"{Fore.YELLOW}[!] WEAVIATE_URL and WEAVIATE_KEY must be set in environment{Style.RESET_ALL}")
+            return None
         client = weaviate.connect_to_weaviate_cloud(
             cluster_url=url,
             auth_credentials=AuthApiKey(key),
