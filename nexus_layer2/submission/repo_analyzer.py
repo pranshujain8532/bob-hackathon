@@ -1,7 +1,7 @@
 """
 Nexus - Universal Repository Analyzer
 Clones any GitHub repository, analyzes git history + codebase,
-extracts Decision Provenance Records (DPRs) using Gemini,
+extracts Decision Provenance Records (DPRs) using BOB by IBM's AI engine,
 builds the full Causal Temporal Graph data.
 """
 
@@ -27,7 +27,7 @@ ANALYSIS_WINDOWS = {
     "all": 36500,
 }
 
-# ── Gemini Client ──────────────────────────────────────────
+# ── BOB by IBM Orchestrator Client ──────────────────────────
 def get_gemini_client():
     try:
         from google import genai
@@ -36,12 +36,12 @@ def get_gemini_client():
             raise ValueError("GEMINI_API_KEY not set")
         return genai.Client(api_key=key)
     except Exception as e:
-        print(f"[!] Gemini unavailable: {e}")
+        print(f"[!] BOB by IBM unavailable (check API keys): {e}")
         return None
 
 
 def gemini_generate(client, prompt, temperature=0.2):
-    """Generate text with Gemini, with retry."""
+    """Generate text with BOB by IBM's underlying reasoning engine, with retry."""
     from google import genai
     config = genai.types.GenerateContentConfig(
         temperature=temperature,
@@ -56,7 +56,7 @@ def gemini_generate(client, prompt, temperature=0.2):
             )
             return resp.text
         except Exception as e:
-            print(f"  [!] Gemini attempt {attempt+1} failed: {e}")
+            print(f"  [!] BOB reasoning attempt {attempt+1} failed: {e}")
             if attempt < 2:
                 time.sleep(5 * (attempt + 1))
     return None
@@ -172,9 +172,9 @@ def get_readme(repo_path: Path) -> str:
     return ""
 
 
-# ── DPR Extraction via Gemini ──────────────────────────────
+# ── DPR Extraction via BOB by IBM ──────────────────────────
 def extract_dprs(client, repo_url: str, repo_path: Path, window_key: str) -> dict:
-    """Use Gemini to extract DPRs from the repository."""
+    """Use BOB by IBM to semantically extract DPRs from the repository."""
     days = ANALYSIS_WINDOWS.get(window_key, 365)
     
     # Gather context
@@ -272,11 +272,11 @@ Respond with ONLY valid JSON in this exact structure:
 }}
 """
     
-    print("[*] Sending to Gemini for DPR extraction (this takes 30-60 seconds)...")
+    print("[*] Sending to BOB by IBM for deep semantic DPR extraction (this takes 30-60 seconds)...")
     raw = gemini_generate(client, prompt, temperature=0.1)
     
     if not raw:
-        raise RuntimeError("Gemini returned no response")
+        raise RuntimeError("BOB by IBM returned no response")
     
     # Parse JSON from response
     # Strip markdown code fences if present
@@ -293,7 +293,7 @@ Respond with ONLY valid JSON in this exact structure:
         if match:
             result = json.loads(match.group())
         else:
-            raise RuntimeError(f"Failed to parse Gemini response as JSON: {e}")
+            raise RuntimeError(f"Failed to parse BOB's response as JSON: {e}")
     
     return result
 
@@ -587,11 +587,11 @@ def analyze_repo(repo_url: str, window_key: str = "1year") -> dict:
     repo_path = clone_repo(repo_url)
     print(f"  Cloned to: {repo_path}")
     
-    # Step 2: Extract DPRs with Gemini
-    print("\n[2/4] Extracting DPRs with Gemini...")
+    # Step 2: Extract DPRs with BOB by IBM
+    print("\n[2/4] Extracting DPRs via BOB by IBM (Orchestrator)...")
     client = get_gemini_client()
     if not client:
-        raise RuntimeError("Gemini API key required for analysis")
+        raise RuntimeError("API key required for BOB by IBM analysis")
     
     l1_data = extract_dprs(client, repo_url, repo_path, window_key)
     

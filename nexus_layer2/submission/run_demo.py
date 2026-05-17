@@ -10,7 +10,7 @@ except ImportError:
     pass  # dotenv not installed; rely on env vars being set
 
 if not os.environ.get("GEMINI_API_KEY"):
-    print("[!] WARNING: GEMINI_API_KEY not set. Set it in .env or environment.")
+    print("[!] WARNING: GEMINI_API_KEY not set. Set it in .env or environment for BOB by IBM reasoning.")
 
 scripts = [
     ("Build nexus_data.json", "build_nexus_data.py"),

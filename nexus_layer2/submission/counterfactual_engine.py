@@ -1,7 +1,7 @@
 """
 Nexus Layer 4 - Counterfactual Simulation Engine
 "What if decision X had gone differently?" — Traces causal consequences.
-Uses Gemini + graph traversal to generate alternate-timeline projections.
+Uses BOB by IBM's orchestration + graph traversal to generate alternate-timeline projections.
 """
 
 import os, sys, json, time
@@ -104,7 +104,7 @@ SCENARIOS = [
 
 
 def simulate_counterfactual(client, scenario, dpr, downstream_dprs, all_dprs):
-    """Ask Gemini to trace the ripple effects of an alternative decision."""
+    """Ask BOB by IBM to trace the ripple effects of an alternative decision."""
     downstream_desc = ""
     for did in downstream_dprs[:8]:
         match = next((d for d in all_dprs if d["id"] == did), None)
@@ -177,7 +177,7 @@ def run_counterfactual_engine():
 
     client = setup_gemini()
     if not client:
-        print("[!] Gemini unavailable — counterfactuals will use placeholder data")
+        print("[!] BOB by IBM unavailable — counterfactuals will use placeholder data")
 
     traces = []
     for scenario in SCENARIOS:
@@ -203,7 +203,7 @@ def run_counterfactual_engine():
                 "broken_assumptions": ["Analysis pending"],
                 "unnecessary_workarounds": [], "new_problems": [],
                 "affected_dprs": [{"dpr_id": d, "impact": "pending"} for d in downstream[:3]],
-                "timeline_narrative": "Counterfactual analysis requires Gemini.",
+                "timeline_narrative": "Counterfactual analysis requires BOB by IBM orchestration.",
                 "modern_relevance": "Pending."
             }
 

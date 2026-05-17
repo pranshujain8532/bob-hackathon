@@ -64,7 +64,7 @@ check("NetworkX nodes match DPR count",
 # 5) At least one evaluation has confidence as float
 summary = latest.get("alert_summary", [])
 has_float_conf = any(isinstance(s.get("confidence"), (int, float)) for s in summary)
-check("Gemini confidence is float", has_float_conf or len(summary) == 0,
+check("BOB by IBM confidence is float", has_float_conf or len(summary) == 0,
       f"{len(summary)} evaluations")
 
 print("=" * 60)

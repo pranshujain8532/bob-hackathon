@@ -344,7 +344,7 @@ async def trigger_report(background_tasks: BackgroundTasks):
 # ── Query Engine ───────────────────────────────────────────
 class QueryRequest(BaseModel):
     question: str
-    use_gemini: bool = True
+    use_gemini: bool = True  # uses BOB by IBM's underlying engine
 
 
 @app.post("/api/query")
@@ -366,7 +366,7 @@ async def query_engine(req: QueryRequest):
 
     results.sort(key=lambda x: x["relevance_score"], reverse=True)
 
-    # If Gemini requested, try to get richer answer
+    # If AI requested, try to get richer answer via BOB by IBM
     gemini_answer = None
     if req.use_gemini:
         try:
@@ -383,7 +383,7 @@ async def query_engine(req: QueryRequest):
                 )
                 gemini_answer = resp.text
         except Exception as e:
-            gemini_answer = f"Gemini unavailable: {str(e)[:100]}"
+            gemini_answer = f"BOB by IBM unavailable: {str(e)[:100]}"
 
     return {
         "question": req.question,

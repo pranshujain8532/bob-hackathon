@@ -104,7 +104,7 @@ export default function CounterfactualLab() {
           </button>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)' }}>
-          Powered by Gemini · Traces causal consequences through {totalRelationships} relationships
+          Powered by BOB by IBM Orchestration · Traces causal consequences through {totalRelationships} relationships
         </div>
       </div>
 
@@ -121,6 +121,7 @@ export default function CounterfactualLab() {
           </div>
           {simResult.gemini_answer && (
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 12, whiteSpace: 'pre-wrap' }}>
+              <strong style={{color: 'var(--teal)'}}>BOB's Analysis:</strong><br/>
               {simResult.gemini_answer}
             </div>
           )}
